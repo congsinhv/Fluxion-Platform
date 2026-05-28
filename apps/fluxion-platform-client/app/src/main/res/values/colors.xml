@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Legacy names kept for existing references (themes, LockedActivity). -->
+    <color name="brand_primary">#1F2937</color>
+    <color name="brand_accent">#C44A2C</color>
+    <color name="lock_background">#B04545</color>
+    <color name="surface">#FBF8F1</color>
+
+    <!-- Editorial Cream + Terracotta palette (mirrors editorial-cream.css). -->
+    <color name="cream_bg">#F4F1EA</color>
+    <color name="cream_paper">#FFFFFF</color>
+    <color name="cream_paper_2">#FBF8F1</color>
+    <color name="cream_ink">#1A1A1A</color>
+    <color name="cream_ink_soft">#3A3A3A</color>
+    <color name="cream_muted">#7A7466</color>
+    <color name="cream_rule">#E4DDCA</color>
+    <color name="cream_accent">#C44A2C</color>
+    <color name="cream_accent_dark">#8A2F1A</color>
+    <color name="state_idle">#9A9389</color>
+    <color name="state_registered">#B88A3A</color>
+    <color name="state_enrolled">#3A4A8C</color>
+    <color name="state_active">#2A6F5B</color>
+    <color name="state_locked">#B04545</color>
+    <color name="state_released">#6A6A6A</color>
+
+    <!-- Adaptive launcher-icon background (matches the logo's cream field). -->
+    <color name="ic_launcher_background">#F2ECDD</color>
+</resources>

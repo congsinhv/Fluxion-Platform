@@ -1,0 +1,29 @@
+{
+  "name": "fluxion",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Fluxion MDM platform — AWS-native Android DPC device management",
+  "workspaces": [
+    "infra",
+    "apps/fluxion-platform-frontend"
+  ],
+  "scripts": {
+    "infra:synth": "npm --workspace infra run synth",
+    "infra:diff": "npm --workspace infra run diff",
+    "infra:deploy": "npm --workspace infra run deploy",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:migrate": "cd scripts/db && alembic upgrade head",
+    "db:fixtures": "psql $DATABASE_URL -f Artifacts/test-fixtures.sql",
+    "fmt": "ruff format apps scripts",
+    "fmt:check": "ruff format --check apps scripts",
+    "lint": "ruff check apps scripts",
+    "lint:fix": "ruff check --fix apps scripts"
+  },
+  "devDependencies": {
+    "aws-cdk": "^2.166.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

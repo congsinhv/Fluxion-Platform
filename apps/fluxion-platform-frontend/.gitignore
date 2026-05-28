@@ -1,0 +1,11 @@
+node_modules
+dist
+dist-ssr
+.env
+.env.local
+.env.production
+*.log
+.DS_Store
+.vite
+src/graphql/generated
+dist-types

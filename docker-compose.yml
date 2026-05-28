@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: fluxion-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: fluxion
+      POSTGRES_PASSWORD: fluxion
+      POSTGRES_DB: fluxion
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fluxion -d fluxion"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-data:

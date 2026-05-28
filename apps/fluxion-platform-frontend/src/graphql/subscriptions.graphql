@@ -1,0 +1,28 @@
+# Real-time push. Each event is a lightweight change signal — the pages use it
+# to refetch the affected query immediately instead of waiting for the 10s poll.
+subscription OnDeviceUpdated($deviceId: ID!) {
+  onDeviceUpdated(deviceId: $deviceId) {
+    deviceId
+    imei
+    eventType
+    at
+  }
+}
+
+subscription OnDeviceChanged {
+  onDeviceChanged {
+    deviceId
+    imei
+    eventType
+    at
+  }
+}
+
+subscription OnDeviceUploadChanged {
+  onDeviceUploadChanged {
+    uploadId
+    imei
+    status
+    at
+  }
+}

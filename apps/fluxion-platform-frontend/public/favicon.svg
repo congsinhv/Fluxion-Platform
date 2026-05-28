@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+<style>.fg{fill:none;stroke:#8A5A12}.bg{fill:none}</style>
+
+
+<defs><clipPath id="a"><polygon points="400.00,405.00 400.00,105.00 140.19,255.00 140.19,555.00"/></clipPath><clipPath id="b"><polygon points="400.00,405.00 400.00,105.00 659.81,255.00 659.81,555.00"/></clipPath><clipPath id="c"><polygon points="400.00,405.00 140.19,555.00 400.00,705.00"/></clipPath><clipPath id="d"><polygon points="400.00,405.00 659.81,555.00 400.00,705.00"/></clipPath></defs>
+<g class="fg" stroke-linecap="butt">
+<line x1="410.10" y1="-390.00" x2="410.10" y2="1050.00" stroke-width="40.00" clip-path="url(#a)"/>
+<line x1="340.10" y1="-390.00" x2="340.10" y2="1050.00" stroke-width="40.00" clip-path="url(#a)"/>
+<line x1="270.10" y1="-390.00" x2="270.10" y2="1050.00" stroke-width="40.00" clip-path="url(#a)"/>
+<line x1="200.10" y1="-390.00" x2="200.10" y2="1050.00" stroke-width="40.00" clip-path="url(#a)"/>
+<line x1="130.10" y1="-390.00" x2="130.10" y2="1050.00" stroke-width="40.00" clip-path="url(#a)"/>
+<line x1="60.10" y1="-390.00" x2="60.10" y2="1050.00" stroke-width="40.00" clip-path="url(#a)"/>
+<line x1="-23.63" y1="-151.24" x2="1223.44" y2="568.76" stroke-width="40.00" clip-path="url(#b)"/>
+<line x1="-58.63" y1="-90.62" x2="1188.44" y2="629.38" stroke-width="40.00" clip-path="url(#b)"/>
+<line x1="-93.63" y1="-30.00" x2="1153.44" y2="690.00" stroke-width="40.00" clip-path="url(#b)"/>
+<line x1="-128.63" y1="30.62" x2="1118.44" y2="750.62" stroke-width="40.00" clip-path="url(#b)"/>
+<line x1="-163.63" y1="91.24" x2="1083.44" y2="811.24" stroke-width="40.00" clip-path="url(#b)"/>
+<line x1="-198.63" y1="151.87" x2="1048.44" y2="871.87" stroke-width="40.00" clip-path="url(#b)"/>
+<line x1="-218.49" y1="36.26" x2="1028.59" y2="756.26" stroke-width="40.00" clip-path="url(#c)"/>
+<line x1="-253.49" y1="96.88" x2="993.59" y2="816.88" stroke-width="40.00" clip-path="url(#c)"/>
+<line x1="-288.49" y1="157.50" x2="958.59" y2="877.50" stroke-width="40.00" clip-path="url(#c)"/>
+<line x1="-323.49" y1="218.12" x2="923.59" y2="938.12" stroke-width="40.00" clip-path="url(#c)"/>
+<line x1="-358.49" y1="278.74" x2="888.59" y2="998.74" stroke-width="40.00" clip-path="url(#c)"/>
+<line x1="-393.49" y1="339.37" x2="853.59" y2="1059.37" stroke-width="40.00" clip-path="url(#c)"/>
+<line x1="1158.49" y1="278.74" x2="-88.59" y2="998.74" stroke-width="40.00" clip-path="url(#d)"/>
+<line x1="1123.49" y1="218.12" x2="-123.59" y2="938.12" stroke-width="40.00" clip-path="url(#d)"/>
+<line x1="1088.49" y1="157.50" x2="-158.59" y2="877.50" stroke-width="40.00" clip-path="url(#d)"/>
+<line x1="1053.49" y1="96.88" x2="-193.59" y2="816.88" stroke-width="40.00" clip-path="url(#d)"/>
+<line x1="1018.49" y1="36.26" x2="-228.59" y2="756.26" stroke-width="40.00" clip-path="url(#d)"/>
+<line x1="983.49" y1="-24.37" x2="-263.59" y2="695.63" stroke-width="40.00" clip-path="url(#d)"/>
+</g>
+</svg>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fluxion DPC</string>
+    <string name="device_admin_label">Fluxion Device Owner</string>
+    <string name="device_admin_description">Manages this device for the Fluxion MDM platform.</string>
+</resources>

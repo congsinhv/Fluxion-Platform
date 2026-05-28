@@ -1,0 +1,31 @@
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = [
+    "**/__pycache__",
+    ".venv",
+    "cdk.out",
+    "node_modules",
+    "infra/cdk.out",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+docstring-code-format = true
+
+[tool.ruff.lint]
+# Formatter-first rollout — keep the lint set small and warning-only.
+# Promote to errors after the codebase has been formatted once.
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "I",    # isort (import sorting)
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear (likely-bug patterns)
+]
+ignore = [
+    "E501",  # line-too-long — formatter handles
+    "B008",  # function call in default arg (FastAPI Depends)
+]

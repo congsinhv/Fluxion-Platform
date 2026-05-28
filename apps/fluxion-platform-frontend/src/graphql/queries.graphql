@@ -1,0 +1,89 @@
+query ConfigMetadata {
+  configMetadata {
+    services { id type name }
+    states { id type name color description service { id type } }
+    actions {
+      id type name actor templateRequired description
+      service { id type }
+      fromState { id type service { id type } }
+      targetState { id type }
+      defaultTemplate { id title content type }
+    }
+  }
+}
+
+query ListDevices($serviceType: ServiceType, $stateType: StateType, $search: String, $first: Int, $after: String) {
+  listDevices(serviceType: $serviceType, stateType: $stateType, search: $search, first: $first, after: $after) {
+    totalCount
+    pageInfo { hasNextPage endCursor }
+    edges {
+      cursor
+      node {
+        id imei
+        currentState { id type name color }
+        service { id type name }
+        assignedAction { id type name }
+        tac { tac provider manufacturer model }
+        lastCheckinAt firstCheckinAt updatedAt
+      }
+    }
+  }
+}
+
+query DeviceDetail($id: ID!) {
+  device(id: $id) {
+    id imei info
+    currentState { id type name color }
+    service { id type name }
+    assignedAction { id type name }
+    tac { tac manufacturer model provider }
+    firstCheckinAt lastCheckinAt createdAt updatedAt
+  }
+}
+
+query DeviceMilestones($deviceId: ID!, $first: Int, $after: String) {
+  listMilestones(deviceId: $deviceId, first: $first, after: $after) {
+    totalCount
+    pageInfo { hasNextPage endCursor }
+    edges {
+      cursor
+      node {
+        id eventType payload createdAt
+        action { id type name }
+        fromState { id type name }
+        toState { id type name }
+        requestedBy { id email displayName }
+      }
+    }
+  }
+}
+
+query ListMessageTemplates($serviceType: ServiceType!) {
+  listMessageTemplates(serviceType: $serviceType) {
+    id title content type headerIconUrl notificationIconUrl
+    service { id type } createdAt updatedAt
+  }
+}
+
+query ListTacs($search: String, $first: Int, $after: String) {
+  listTacs(search: $search, first: $first, after: $after) {
+    totalCount
+    pageInfo { hasNextPage endCursor }
+    edges { cursor node { id tac provider manufacturer model createdAt updatedAt } }
+  }
+}
+
+query ListDeviceUploads($status: UploadStatus, $first: Int, $after: String) {
+  listDeviceUploads(status: $status, first: $first, after: $after) {
+    totalCount
+    pageInfo { hasNextPage endCursor }
+    edges {
+      cursor
+      node {
+        id source status imeiInput fileName result createdAt updatedAt
+        uploadedBy { id email displayName }
+        device { id imei currentState { type name color } }
+      }
+    }
+  }
+}

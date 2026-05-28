@@ -1,0 +1,43 @@
+mutation UploadImei($input: UploadImeiInput!) {
+  uploadImei(input: $input) {
+    id source status imeiInput result createdAt
+    device { id imei currentState { type name } }
+  }
+}
+
+mutation DispatchAction($input: DispatchActionInput!) {
+  dispatchAction(input: $input) {
+    actionId
+    status
+  }
+}
+
+mutation CreateMessageTemplate($input: CreateMessageTemplateInput!) {
+  createMessageTemplate(input: $input) {
+    id title content type headerIconUrl notificationIconUrl
+    service { id type } createdAt updatedAt
+  }
+}
+
+mutation UpdateMessageTemplate($input: UpdateMessageTemplateInput!) {
+  updateMessageTemplate(input: $input) {
+    id title content type headerIconUrl notificationIconUrl
+    service { id type } createdAt updatedAt
+  }
+}
+
+mutation DeleteMessageTemplate($id: ID!) {
+  deleteMessageTemplate(id: $id)
+}
+
+mutation CreateTac($input: CreateTacInput!) {
+  createTac(input: $input) { id tac provider manufacturer model createdAt updatedAt }
+}
+
+mutation UpdateTac($input: UpdateTacInput!) {
+  updateTac(input: $input) { id tac provider manufacturer model createdAt updatedAt }
+}
+
+mutation DeleteTac($tac: String!) {
+  deleteTac(tac: $tac)
+}

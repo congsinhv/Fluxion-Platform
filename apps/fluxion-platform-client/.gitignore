@@ -1,0 +1,13 @@
+*.iml
+.gradle/
+local.properties
+.idea/
+.DS_Store
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+app/release/
+
+# Firebase config — provisioned per-machine, contains app-level keys
+app/google-services.json

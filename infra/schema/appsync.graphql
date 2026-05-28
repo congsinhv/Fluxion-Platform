@@ -1,0 +1,215 @@
+scalar AWSDateTime
+scalar AWSJSON
+
+enum ServiceType { INVENTORY DEVICE_FINANCING }
+enum StateType { IDLE REGISTERED ENROLLED ACTIVE LOCKED RELEASED }
+enum ActionType {
+  UPLOAD REGISTER ENROLL ACTIVATE LOCK UNLOCK
+  RELEASE_FROM_ACTIVE RELEASE_FROM_LOCKED
+  NOTIFY_FROM_ACTIVE NOTIFY_FROM_LOCKED
+}
+enum ActorType { OPERATOR SYSTEM }
+enum MessageTemplateType { POPUP FULLSCREEN }
+enum MilestoneEventType { REQUESTED APPLIED FAILED }
+enum UploadSource { SINGLE BATCH }
+enum UploadStatus { PROCESSING COMPLETED }
+enum DispatchStatus { SUCCESS }
+
+type Service { id: ID! type: ServiceType! name: String! }
+
+type State {
+  id: ID!
+  type: StateType!
+  service: Service!
+  name: String!
+  color: String
+  description: String
+}
+
+type Action {
+  id: ID!
+  type: ActionType!
+  service: Service!
+  name: String!
+  fromState: State
+  targetState: State
+  actor: ActorType!
+  templateRequired: Boolean!
+  defaultTemplate: MessageTemplate
+  description: String
+}
+
+type MessageTemplate {
+  id: ID!
+  service: Service!
+  title: String!
+  content: String!
+  type: MessageTemplateType!
+  headerIconUrl: String
+  notificationIconUrl: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Tac {
+  id: ID!
+  tac: String!
+  provider: String!
+  manufacturer: String!
+  model: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type User {
+  id: ID!
+  email: String!
+  displayName: String
+}
+
+type Device {
+  id: ID!
+  imei: String!
+  tac: Tac!
+  service: Service!
+  currentState: State!
+  assignedAction: Action
+  info: AWSJSON!
+  firstCheckinAt: AWSDateTime
+  lastCheckinAt: AWSDateTime
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Milestone {
+  id: ID!
+  device: Device!
+  action: Action!
+  eventType: MilestoneEventType!
+  fromState: State
+  toState: State
+  requestedBy: User
+  payload: AWSJSON!
+  createdAt: AWSDateTime!
+}
+
+type DispatchResult {
+  actionId: ID!
+  status: DispatchStatus!
+}
+
+type DeviceUpload {
+  id: ID!
+  source: UploadSource!
+  status: UploadStatus!
+  uploadedBy: User!
+  imeiInput: String
+  fileName: String
+  result: AWSJSON!
+  device: Device
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ConfigMetadata {
+  services: [Service!]!
+  states: [State!]!
+  actions: [Action!]!
+}
+
+# Real-time change events. Scalar-only by design: an AppSync subscription
+# delivers exactly the triggering mutation's payload — nested field resolvers
+# (Device.currentState, tac, ...) do NOT re-run on push. The frontend uses
+# these as an instant "refetch the affected query" signal. Annotated for both
+# auth modes: returned by an IAM publish mutation and a Cognito subscription.
+type DeviceChangeEvent @aws_iam @aws_cognito_user_pools {
+  deviceId: ID!
+  imei: String
+  eventType: MilestoneEventType!
+  at: AWSDateTime!
+}
+type DeviceUploadChangeEvent @aws_iam @aws_cognito_user_pools {
+  uploadId: ID!
+  imei: String
+  status: UploadStatus!
+  at: AWSDateTime!
+}
+
+type PageInfo { hasNextPage: Boolean! endCursor: String }
+type DeviceEdge { cursor: String! node: Device! }
+type DeviceConnection { edges: [DeviceEdge!]! pageInfo: PageInfo! totalCount: Int! }
+type MilestoneEdge { cursor: String! node: Milestone! }
+type MilestoneConnection { edges: [MilestoneEdge!]! pageInfo: PageInfo! totalCount: Int! }
+type TacEdge { cursor: String! node: Tac! }
+type TacConnection { edges: [TacEdge!]! pageInfo: PageInfo! totalCount: Int! }
+type DeviceUploadEdge { cursor: String! node: DeviceUpload! }
+type DeviceUploadConnection { edges: [DeviceUploadEdge!]! pageInfo: PageInfo! totalCount: Int! }
+
+input DispatchActionInput {
+  deviceId: ID!
+  actionType: ActionType!
+  templateId: ID
+  metadata: AWSJSON
+}
+input UploadImeiInput { imei: String! }
+input CreateMessageTemplateInput {
+  serviceType: ServiceType!
+  title: String!
+  content: String!
+  type: MessageTemplateType!
+  headerIconUrl: String
+  notificationIconUrl: String
+}
+input UpdateMessageTemplateInput {
+  id: ID!
+  title: String
+  content: String
+  type: MessageTemplateType
+  headerIconUrl: String
+  notificationIconUrl: String
+}
+input CreateTacInput { tac: String! provider: String! manufacturer: String! model: String! }
+input UpdateTacInput { tac: String! provider: String! model: String! }
+# Inputs for the internal broadcast mutations (called only by backend Lambdas via IAM).
+input PublishDeviceChangeInput { deviceId: ID! imei: String eventType: MilestoneEventType! at: AWSDateTime! }
+input PublishDeviceUploadChangeInput { uploadId: ID! imei: String status: UploadStatus! at: AWSDateTime! }
+
+type Query {
+  listDevices(serviceType: ServiceType, stateType: StateType, search: String, first: Int, after: String): DeviceConnection!
+  device(imei: String, id: ID): Device
+  listMilestones(deviceId: ID!, first: Int, after: String): MilestoneConnection!
+  listMessageTemplates(serviceType: ServiceType!): [MessageTemplate!]!
+  listTacs(search: String, first: Int, after: String): TacConnection!
+  listDeviceUploads(status: UploadStatus, first: Int, after: String): DeviceUploadConnection!
+  configMetadata: ConfigMetadata!
+}
+
+type Mutation {
+  uploadImei(input: UploadImeiInput!): DeviceUpload!
+  dispatchAction(input: DispatchActionInput!): DispatchResult!
+  createMessageTemplate(input: CreateMessageTemplateInput!): MessageTemplate!
+  updateMessageTemplate(input: UpdateMessageTemplateInput!): MessageTemplate!
+  deleteMessageTemplate(id: ID!): Boolean!
+  createTac(input: CreateTacInput!): Tac!
+  updateTac(input: UpdateTacInput!): Tac!
+  deleteTac(tac: String!): Boolean!
+  # Internal broadcast mutations — IAM-only (backend publishers); operators never call these.
+  publishDeviceChange(input: PublishDeviceChangeInput!): DeviceChangeEvent! @aws_iam
+  publishDeviceUploadChange(input: PublishDeviceUploadChangeInput!): DeviceUploadChangeEvent! @aws_iam
+}
+
+# Cognito-authed real-time push. onDeviceUpdated(deviceId) auto-filters server-side:
+# AppSync pushes only when the triggering mutation's returned deviceId matches the arg.
+type Subscription {
+  onDeviceUpdated(deviceId: ID!): DeviceChangeEvent
+    @aws_subscribe(mutations: ["publishDeviceChange"])
+    @aws_cognito_user_pools
+  onDeviceChanged: DeviceChangeEvent
+    @aws_subscribe(mutations: ["publishDeviceChange"])
+    @aws_cognito_user_pools
+  onDeviceUploadChanged: DeviceUploadChangeEvent
+    @aws_subscribe(mutations: ["publishDeviceUploadChange"])
+    @aws_cognito_user_pools
+}
+
+schema { query: Query mutation: Mutation subscription: Subscription }

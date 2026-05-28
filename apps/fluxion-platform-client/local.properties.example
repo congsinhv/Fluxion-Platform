@@ -1,0 +1,6 @@
+# Copy to local.properties (gitignored) and fill values.
+# DPC base URL = the deployed API Gateway HTTP API endpoint (CDK output).
+# Internal API key = X-Internal-API-Key for /v1/enroll (matches checkin Lambda env).
+sdk.dir=/Users/<you>/Library/Android/sdk
+DPC_BASE_URL=https://<api-id>.execute-api.ap-southeast-1.amazonaws.com
+DPC_INTERNAL_API_KEY=replace-me
